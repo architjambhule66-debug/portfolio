@@ -600,6 +600,75 @@
     .tl-content { font-size: .9rem; color: var(--muted); line-height: 1.6; }
     .tl-content strong { color: var(--text); display: block; font-family: 'DM Sans', sans-serif; font-size: .95rem; }
 
+    /* ─── CAREER PAGE ─── */
+    .career-intro {
+      margin-bottom: 2rem;
+      max-width: 680px;
+    }
+    .career-actions {
+      display: flex;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .career-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .career-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      background: var(--surface);
+    }
+    .career-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .85rem;
+    }
+    .career-role {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .career-company-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .5rem;
+      color: var(--muted);
+      margin-top: .2rem;
+    }
+    .career-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+    .career-summary {
+      color: var(--muted);
+    }
+    .career-summary-list {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+    .career-summary-list li + li {
+      margin-top: .45rem;
+    }
+    .career-worked-on {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .career-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
     /* ─── EMPTY STATES ─── */
     .empty-state {
       text-align: center;
@@ -629,6 +698,8 @@
       .page { padding: 1.5rem 1.25rem; }
       .docs-viewer { width: 100%; }
       .about-grid { grid-template-columns: 1fr; }
+      .career-header { flex-direction: column; }
+      .career-meta { white-space: normal; }
       .blog-card { flex-direction: column; gap: .5rem; }
       .blog-meta-col { text-align: left; }
       .stats-row { flex-wrap: wrap; }
@@ -652,6 +723,9 @@
       </a>
       <a class="nav-link" onclick="navigate('projects')">
         <span class="icon">⬡</span> projects
+      </a>
+      <a class="nav-link" onclick="navigate('career')">
+        <span class="icon">▣</span> career
       </a>
       <a class="nav-link" onclick="navigate('blog')">
         <span class="icon">◫</span> blog
@@ -691,6 +765,18 @@
         <p class="page-subtitle">Open source libraries, tools, and experiments.</p>
       </div>
       <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- CAREER -->
+    <div class="page" id="page-career">
+      <div class="page-header">
+        <div class="page-label">// career</div>
+        <h1 class="page-title">Career</h1>
+        <p class="page-subtitle" id="career-subtitle">Professional journey, companies, and public work.</p>
+      </div>
+      <div class="career-actions" id="career-actions"></div>
+      <div class="md-content career-intro" id="career-journey"></div>
+      <div class="career-list" id="career-list"></div>
     </div>
 
     <!-- BLOG -->
@@ -756,11 +842,84 @@
   function init() {
     applyProfile();
     renderProjects();
+    renderCareer();
     renderBlog();
     renderAbout();
     // Handle URL hash for deep linking
     const hash = location.hash.replace('#', '') || 'home';
     navigate(hash, true);
+  }
+
+  // ── CAREER ────────────────────────────────────────────────────────
+  function renderCareer() {
+    const c = PORTFOLIO.career;
+    if (!c) return;
+
+    document.getElementById('career-subtitle').textContent = c.subtitle || 'Professional journey, companies, and public work.';
+
+    const actions = document.getElementById('career-actions');
+    actions.innerHTML = '';
+    if (c.resume && c.resume.file) {
+      actions.innerHTML = `<a class="btn btn-primary" href="${c.resume.file}" download>${c.resume.label || 'Download Resume'}</a>`;
+    }
+
+    const intro = document.getElementById('career-journey');
+    intro.innerHTML = c.journey ? marked.parse(c.journey) : '';
+
+    const list = document.getElementById('career-list');
+    list.innerHTML = '';
+
+    if (!c.roles || !c.roles.length) {
+      list.innerHTML = '<div class="empty-state">No career entries yet — add them in config.js</div>';
+      return;
+    }
+
+    c.roles.forEach(item => {
+      const summaryPoints = Array.isArray(item.summary)
+        ? item.summary.filter(Boolean)
+        : String(item.summary || '')
+            .split('\n')
+            .map(point => point.trim())
+            .filter(Boolean);
+
+      const companyLabel = item.companyUrl
+        ? `<a class="proj-link" href="${item.companyUrl}" target="_blank">${item.company} ↗</a>`
+        : `<span>${item.company || ''}</span>`;
+
+      const workedOn = (item.workedOn || []).length
+        ? `
+          <div class="career-worked-on">
+            <div class="about-card-title">Worked on</div>
+            <div class="career-links">
+              ${(item.workedOn || []).map(project => `
+                <a class="proj-link" href="${project.url}" target="_blank" title="${project.description || project.name}">${project.name} ↗</a>
+              `).join('')}
+            </div>
+          </div>
+        `
+        : '';
+
+      const card = document.createElement('article');
+      card.className = 'career-item';
+      card.innerHTML = `
+        <div class="career-header">
+          <div>
+            <div class="career-role">${item.role || ''}</div>
+            <div class="career-company-row">${companyLabel}</div>
+          </div>
+          <div class="career-meta">${[item.period, item.location].filter(Boolean).join(' • ')}</div>
+        </div>
+        ${summaryPoints.length ? `
+          <div class="career-summary">
+            <ul class="career-summary-list">
+              ${summaryPoints.map(point => `<li>${point}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        ${workedOn}
+      `;
+      list.appendChild(card);
+    });
   }
 
   // ── PROFILE ───────────────────────────────────────────────────────
