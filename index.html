@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    :root {
+      --bg:        #f9f8f6;
+      --surface:   #ffffff;
+      --border:    #e8e5e0;
+      --border2:   #d4d0c8;
+      --text:      #1a1916;
+      --muted:     #7a7670;
+      --accent:    #2563eb;
+      --accent2:   #0ea5e9;
+      --accent3:   #dc2626;
+      --tag-bg:    #f2f0ec;
+      --radius:    6px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── LAYOUT ─── */
+    #app { position: relative; z-index: 1; }
+
+    /* ─── SIDEBAR NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 220px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .nav-logo .name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo .handle {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .nav-links { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 .75rem; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .6rem .75rem;
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all .15s;
+    }
+    .nav-link:hover { color: var(--text); background: var(--tag-bg); }
+    .nav-link.active {
+      color: var(--accent);
+      background: rgba(37,99,235,.06);
+      border-color: rgba(37,99,235,.12);
+    }
+    .nav-link .icon { font-size: 1rem; width: 1.2rem; text-align: center; }
+
+    .nav-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .social-links { display: flex; gap: .5rem; }
+    .social-link {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      transition: all .15s;
+    }
+    .social-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── MAIN CONTENT ─── */
+    main {
+      margin-left: 220px;
+      min-height: 100vh;
+    }
+
+    .page { display: none; padding: 3rem 4rem; max-width: 900px; animation: fadeIn .2s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
+
+    /* ─── PAGE HEADERS ─── */
+    .page-header { margin-bottom: 3rem; }
+    .page-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -.01em;
+      line-height: 1.15;
+    }
+    .page-subtitle {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-top: .6rem;
+    }
+
+    /* ─── HOME PAGE ─── */
+    .hero { padding: 2rem 0 3rem; }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-bottom: 1rem;
+    }
+    .hero-eyebrow span { color: var(--muted); }
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-name em { font-style: italic; color: var(--muted); font-weight: 400; }
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-bio strong { color: var(--text); font-weight: 500; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2.5rem; }
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      padding: .3rem .75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      background: var(--tag-bg);
+    }
+    .hero-cta { display: flex; gap: 1rem; }
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem;
+      padding: .65rem 1.4rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: all .15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--accent); color: #fff; font-weight: 600; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-outline { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+    .btn-outline:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
+
+    .stats-row {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    .stat {
+      flex: 1;
+      padding: 1.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .2rem;
+    }
+
+    /* ─── PROJECTS ─── */
+    .projects-grid { display: grid; gap: 1rem; }
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+    }
+    .project-card:hover {
+      border-color: var(--border2);
+      background: var(--tag-bg);
+      transform: translateY(-1px);
+    }
+    .project-card.featured { border-left: 3px solid var(--accent); }
+    .project-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
+    .project-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.02em;
+    }
+    .project-badges { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .badge {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      padding: .2rem .55rem;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border2);
+      color: var(--muted);
+    }
+    .badge.pypi { color: var(--accent2); border-color: rgba(14,165,233,.2); background: rgba(14,165,233,.05); }
+    .badge.featured { color: var(--accent); border-color: rgba(37,99,235,.2); background: rgba(37,99,235,.05); }
+    .project-desc {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .project-footer { display: flex; align-items: center; justify-content: space-between; }
+    .project-tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      color: var(--muted);
+      padding: .15rem .5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .project-links { display: flex; gap: .5rem; }
+    .proj-link {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: .25rem .6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all .15s;
+    }
+    .proj-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── PROJECT DOCS VIEWER ─── */
+    .docs-viewer {
+      position: fixed;
+      top: 0; right: 0;
+      width: calc(100vw - 220px);
+      height: 100vh;
+      background: var(--bg);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+    }
+    .docs-viewer.open { display: flex; }
+    .docs-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .docs-close {
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      padding: .3rem .7rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .docs-close:hover { color: var(--accent3); border-color: var(--accent3); }
+    .docs-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .docs-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 0 2rem;
+    }
+    .docs-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      padding: .6rem 1rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .15s;
+    }
+    .docs-tab:hover { color: var(--text); }
+    .docs-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .docs-body { flex: 1; overflow-y: auto; padding: 2.5rem 4rem; }
+    .docs-loading {
+      display: flex; align-items: center; justify-content: center;
+      height: 200px;
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* ─── MARKDOWN STYLES ─── */
+    .md-content { max-width: 720px; }
+    .md-content h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.9rem;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      margin-bottom: 1rem;
+      margin-top: 2.5rem;
+      color: var(--text);
+    }
+    .md-content h1:first-child { margin-top: 0; }
+    .md-content h2 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: .75rem;
+      color: var(--text);
+      padding-bottom: .4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .md-content h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: .5rem;
+      color: var(--text);
+    }
+    .md-content p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
+    .md-content strong { color: var(--text); }
+    .md-content a { color: var(--accent); text-underline-offset: 3px; }
+    .md-content a:hover { color: var(--accent2); }
+    .md-content code {
+      font-family: 'DM Mono', monospace;
+      font-size: .82em;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: .1em .4em;
+      border-radius: 3px;
+      color: var(--accent);
+    }
+    .md-content pre {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+    }
+    .md-content pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: .82rem;
+      color: var(--text);
+    }
+    .md-content ul, .md-content ol {
+      padding-left: 1.5rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .md-content li { margin-bottom: .3rem; line-height: 1.7; }
+    .md-content blockquote {
+      border-left: 3px solid var(--accent);
+      padding: .5rem 1rem;
+      margin: 1rem 0;
+      background: rgba(37,99,235,.04);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .md-content blockquote p { color: var(--text); }
+    .md-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+    .md-content th {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border2);
+      padding: .5rem .75rem;
+      text-align: left;
+    }
+    .md-content td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); color: var(--muted); }
+    .md-content img { max-width: 100%; border-radius: var(--radius); border: 1px solid var(--border); }
+    .md-content hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* ─── BLOG ─── */
+    .blog-list { display: flex; flex-direction: column; gap: .75rem; }
+    .blog-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .blog-card:hover { border-color: var(--border2); background: var(--tag-bg); transform: translateY(-1px); }
+    .blog-meta-col {
+      min-width: 100px;
+      text-align: right;
+    }
+    .blog-date {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .blog-reading-time {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      color: var(--muted);
+      margin-top: .3rem;
+      opacity: .6;
+    }
+    .blog-content-col { flex: 1; }
+    .blog-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .4rem;
+      letter-spacing: -.02em;
+    }
+    .blog-excerpt {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .blog-tags { display: flex; gap: .4rem; margin-top: .75rem; flex-wrap: wrap; }
+
+    /* ─── BLOG READER ─── */
+    .blog-reader { display: none; }
+    .blog-reader.open { display: block; }
+    .blog-back {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      margin-bottom: 2rem;
+      transition: color .15s;
+    }
+    .blog-back:hover { color: var(--accent); }
+    .blog-reader-header { margin-bottom: 2.5rem; }
+    .blog-reader-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .blog-reader-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    /* ─── ABOUT PAGE ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .about-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      background: var(--surface);
+    }
+    .about-card-title {
+      font-family: 'DM Sans', monospace;
+      font-size: .72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .75rem;
+      font-weight: 600;
+    }
+    .skill-list { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .skill-item {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      padding: .2rem .55rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: var(--tag-bg);
+    }
+    .timeline { list-style: none; }
+    .timeline li {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      position: relative;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: 56px;
+      top: 8px;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline li:last-child::before { display: none; }
+    .tl-year {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      width: 50px;
+      min-width: 50px;
+      margin-top: .1rem;
+    }
+    .tl-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      margin-top: .3rem;
+      flex-shrink: 0;
+    }
+    .tl-content { font-size: .9rem; color: var(--muted); line-height: 1.6; }
+    .tl-content strong { color: var(--text); display: block; font-family: 'DM Sans', sans-serif; font-size: .95rem; }
+
+    /* ─── EMPTY STATES ─── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      nav { width: 100%; height: auto; flex-direction: row; position: fixed; top: auto; bottom: 0; border-right: none; border-top: 1px solid var(--border); padding: 0; overflow-x: auto; }
+      .nav-logo { display: none; }
+      .nav-footer { display: none; }
+      .nav-links { flex-direction: row; padding: .5rem; gap: 0; }
+      .nav-link { flex-direction: column; gap: .2rem; font-size: .58rem; padding: .4rem .6rem; min-width: 60px; text-align: center; }
+      .nav-link .icon { font-size: .9rem; width: auto; }
+      main { margin-left: 0; margin-bottom: 70px; }
+      .page { padding: 1.5rem 1.25rem; }
+      .docs-viewer { width: 100%; }
+      .about-grid { grid-template-columns: 1fr; }
+      .blog-card { flex-direction: column; gap: .5rem; }
+      .blog-meta-col { text-align: left; }
+      .stats-row { flex-wrap: wrap; }
+      .stat { min-width: 50%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ─── SIDEBAR ─── -->
+  <nav>
+    <div class="nav-logo">
+      <div class="name" id="nav-name">Your Name</div>
+      <div class="handle" id="nav-handle">$ developer</div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" onclick="navigate('home')">
+        <span class="icon">◈</span> home
+      </a>
+      <a class="nav-link" onclick="navigate('projects')">
+        <span class="icon">⬡</span> projects
+      </a>
+      <a class="nav-link" onclick="navigate('blog')">
+        <span class="icon">◫</span> blog
+      </a>
+      <a class="nav-link" onclick="navigate('about')">
+        <span class="icon">◉</span> about
+      </a>
+    </div>
+    <div class="nav-footer">
+      <div class="social-links" id="social-links"></div>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN ─── -->
+  <main>
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-eyebrow">status <span>— available for work</span></div>
+        <h1 class="hero-name" id="hero-name">Your<br/><em>Name</em></h1>
+        <p class="hero-bio" id="hero-bio">A short bio goes here. Tell the world who you are and what you build.</p>
+        <div class="hero-tags" id="hero-tags"></div>
+        <div class="hero-cta">
+          <a class="btn btn-primary" onclick="navigate('projects')">View Projects →</a>
+          <a class="btn btn-outline" onclick="navigate('about')">About me</a>
+        </div>
+      </div>
+      <div class="stats-row" id="stats-row"></div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="page" id="page-projects">
+      <div class="page-header">
+        <div class="page-label">// work</div>
+        <h1 class="page-title">Projects</h1>
+        <p class="page-subtitle">Open source libraries, tools, and experiments.</p>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- BLOG -->
+    <div class="page" id="page-blog">
+      <div id="blog-list-view">
+        <div class="page-header">
+          <div class="page-label">// writing</div>
+          <h1 class="page-title">Blog</h1>
+          <p class="page-subtitle">Thoughts on code, tools, and building things.</p>
+        </div>
+        <div class="blog-list" id="blog-list"></div>
+      </div>
+      <div id="blog-reader-view" class="blog-reader">
+        <button class="blog-back" onclick="closeBlogPost()">← back to blog</button>
+        <div class="blog-reader-header">
+          <h1 class="blog-reader-title" id="blog-reader-title"></h1>
+          <div class="blog-reader-meta" id="blog-reader-meta"></div>
+        </div>
+        <div class="md-content" id="blog-reader-content"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="page" id="page-about">
+      <div class="page-header">
+        <div class="page-label">// me</div>
+        <h1 class="page-title">About</h1>
+        <p class="page-subtitle" id="about-subtitle">A bit about who I am.</p>
+      </div>
+      <div class="md-content" id="about-text" style="margin-bottom:2rem;max-width:600px;"></div>
+      <div class="about-grid" id="about-grid"></div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;background:var(--surface);">
+        <div class="about-card-title">Timeline</div>
+        <ul class="timeline" id="about-timeline"></ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── DOCS VIEWER ─── -->
+  <div class="docs-viewer" id="docs-viewer">
+    <div class="docs-header">
+      <button class="docs-close" onclick="closeDocs()">✕ close</button>
+      <div class="docs-title" id="docs-viewer-title">Project Docs</div>
+      <div style="margin-left:auto;display:flex;gap:.5rem;" id="docs-external-links"></div>
+    </div>
+    <div class="docs-tabs" id="docs-tabs"></div>
+    <div class="docs-body">
+      <div class="md-content" id="docs-content"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── CONFIG ─── -->
+<script src="config.js"></script>
+
+<!-- ─── APP ─── -->
+<script>
+(function () {
+
+  // ── INIT ──────────────────────────────────────────────────────────
+  function init() {
+    applyProfile();
+    renderProjects();
+    renderBlog();
+    renderAbout();
+    // Handle URL hash for deep linking
+    const hash = location.hash.replace('#', '') || 'home';
+    navigate(hash, true);
+  }
+
+  // ── PROFILE ───────────────────────────────────────────────────────
+  function applyProfile() {
+    const p = PORTFOLIO.profile;
+    document.title = p.name + ' — Portfolio';
+    document.getElementById('nav-name').textContent = p.name;
+    document.getElementById('nav-handle').textContent = '$ ' + (p.handle || 'developer');
+    document.getElementById('hero-name').innerHTML = p.heroName || p.name;
+    document.getElementById('hero-bio').innerHTML = p.bio;
+    document.getElementById('about-subtitle').textContent = p.aboutSubtitle || '';
+
+    // Hero tags
+    const tagsEl = document.getElementById('hero-tags');
+    (p.tags || []).forEach(t => {
+      const el = document.createElement('span');
+      el.className = 'hero-tag';
+      el.textContent = t;
+      tagsEl.appendChild(el);
+    });
+
+    // Stats
+    const statsEl = document.getElementById('stats-row');
+    (p.stats || []).forEach(s => {
+      statsEl.innerHTML += `<div class="stat">
+        <div class="stat-num">${s.num}<span>${s.suffix||''}</span></div>
+        <div class="stat-label">${s.label}</div>
+      </div>`;
+    });
+
+    // Social links
+    const socialEl = document.getElementById('social-links');
+    (p.social || []).forEach(s => {
+      socialEl.innerHTML += `<a class="social-link" href="${s.url}" target="_blank" title="${s.label}">${s.icon}</a>`;
+    });
+  }
+
+  // ── NAVIGATION ────────────────────────────────────────────────────
+  window.navigate = function (page, silent) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('active');
+    const navLink = document.querySelector(`.nav-link[onclick*="'${page}'"]`);
+    if (navLink) navLink.classList.add('active');
+    if (!silent) location.hash = page;
+    // Reset blog reader
+    if (page === 'blog') closeBlogPost();
+  };
+
+  // ── PROJECTS ──────────────────────────────────────────────────────
+  function renderProjects() {
+    const grid = document.getElementById('projects-grid');
+    if (!PORTFOLIO.projects || !PORTFOLIO.projects.length) {
+      grid.innerHTML = '<div class="empty-state">No projects yet — add them in config.js</div>';
+      return;
+    }
+    PORTFOLIO.projects.forEach(proj => {
+      const card = document.createElement('div');
+      card.className = 'project-card' + (proj.featured ? ' featured' : '');
+      card.innerHTML = `
+        <div class="project-top">
+          <div class="project-name">${proj.name}</div>
+          <div class="project-badges">
+            ${proj.featured ? '<span class="badge featured">★ featured</span>' : ''}
+            ${proj.pypi ? '<span class="badge pypi">PyPI</span>' : ''}
+            ${(proj.badges||[]).map(b => `<span class="badge">${b}</span>`).join('')}
+          </div>
+        </div>
+        <p class="project-desc">${proj.description}</p>
+        <div class="project-footer">
+          <div class="project-tags">${(proj.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          <div class="project-links">
+            ${proj.docs ? `<span class="proj-link" onclick="event.stopPropagation();openDocs('${proj.id}')">docs</span>` : ''}
+            ${proj.github ? `<a class="proj-link" href="${proj.github}" target="_blank" onclick="event.stopPropagation()">github ↗</a>` : ''}
+            ${proj.pypi_url ? `<a class="proj-link" href="${proj.pypi_url}" target="_blank" onclick="event.stopPropagation()">pypi ↗</a>` : ''}
+          </div>
+        </div>
+      `;
+      if (proj.docs) card.addEventListener('click', () => openDocs(proj.id));
+      grid.appendChild(card);
+    });
+  }
+
+  // ── DOCS VIEWER ───────────────────────────────────────────────────
+  window.openDocs = async function (projectId) {
+    const proj = PORTFOLIO.projects.find(p => p.id === projectId);
+    if (!proj || !proj.docs) return;
+
+    document.getElementById('docs-viewer-title').textContent = proj.name;
+    document.getElementById('docs-viewer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // External links
+    const extLinks = document.getElementById('docs-external-links');
+    extLinks.innerHTML = '';
+    if (proj.github) extLinks.innerHTML += `<a class="proj-link" href="${proj.github}" target="_blank">GitHub ↗</a>`;
+    if (proj.pypi_url) extLinks.innerHTML += `<a class="proj-link" href="${proj.pypi_url}" target="_blank">PyPI ↗</a>`;
+
+    // Tabs
+    const tabsEl = document.getElementById('docs-tabs');
+    tabsEl.innerHTML = '';
+    const files = Array.isArray(proj.docs) ? proj.docs : [proj.docs];
+    files.forEach((file, i) => {
+      const tabName = typeof file === 'object' ? file.label : file.split('/').pop().replace('.md', '');
+      const tab = document.createElement('div');
+      tab.className = 'docs-tab' + (i === 0 ? ' active' : '');
+      tab.textContent = tabName;
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.docs-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        loadDocFile(typeof file === 'object' ? file.path : file);
+      });
+      tabsEl.appendChild(tab);
+    });
+
+    // Load first tab
+    const firstFile = typeof files[0] === 'object' ? files[0].path : files[0];
+    loadDocFile(firstFile);
+  };
+
+  async function loadDocFile(path) {
+    const el = document.getElementById('docs-content');
+    el.innerHTML = '<div class="docs-loading">loading...</div>';
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Not found');
+      const md = await res.text();
+      el.innerHTML = marked.parse(md);
+    } catch {
+      el.innerHTML = `<div class="docs-loading">Could not load <code>${path}</code> — make sure the file exists in your repo.</div>`;
+    }
+  }
+
+  window.closeDocs = function () {
+    document.getElementById('docs-viewer').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  // ── BLOG ──────────────────────────────────────────────────────────
+  function renderBlog() {
+    const list = document.getElementById('blog-list');
+    if (!PORTFOLIO.blog || !PORTFOLIO.blog.length) {
+      list.innerHTML = '<div class="empty-state">No posts yet — add them in config.js</div>';
+      return;
+    }
+    PORTFOLIO.blog.forEach(post => {
+      const card = document.createElement('div');
+      card.className = 'blog-card';
+      card.innerHTML = `
+        <div class="blog-meta-col">
+          <div class="blog-date">${post.date}</div>
+          <div class="blog-reading-time">${post.readTime || ''}</div>
+        </div>
+        <div class="blog-content-col">
+          <div class="blog-title">${post.title}</div>
+          <div class="blog-excerpt">${post.excerpt || ''}</div>
+          <div class="blog-tags">${(post.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => openBlogPost(post));
+      list.appendChild(card);
+    });
+  }
+
+  window.openBlogPost = async function (post) {
+    document.getElementById('blog-list-view').style.display = 'none';
+    const reader = document.getElementById('blog-reader-view');
+    reader.classList.add('open');
+
+    document.getElementById('blog-reader-title').textContent = post.title;
+    document.getElementById('blog-reader-meta').innerHTML = `
+      <span>${post.date}</span>
+      ${post.readTime ? `<span>${post.readTime}</span>` : ''}
+      ${(post.tags||[]).map(t=>`<span>${t}</span>`).join('')}
+    `;
+
+    const content = document.getElementById('blog-reader-content');
+    content.innerHTML = '<div class="docs-loading">loading post...</div>';
+
+    if (post.content) {
+      // Inline markdown content
+      content.innerHTML = marked.parse(post.content);
+    } else if (post.file) {
+      // Load from file
+      try {
+        const res = await fetch(post.file);
+        if (!res.ok) throw new Error('Not found');
+        const md = await res.text();
+        content.innerHTML = marked.parse(md);
+      } catch {
+        content.innerHTML = `<div class="docs-loading">Could not load <code>${post.file}</code></div>`;
+      }
+    }
+    reader.scrollIntoView();
+  };
+
+  window.closeBlogPost = function () {
+    document.getElementById('blog-list-view').style.display = 'block';
+    document.getElementById('blog-reader-view').classList.remove('open');
+  };
+
+  // ── ABOUT ─────────────────────────────────────────────────────────
+  function renderAbout() {
+    const a = PORTFOLIO.about;
+    if (!a) return;
+
+    if (a.bio) {
+      document.getElementById('about-text').innerHTML = marked.parse(a.bio);
+    }
+
+    const grid = document.getElementById('about-grid');
+    (a.cards || []).forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'about-card';
+      el.innerHTML = `
+        <div class="about-card-title">${card.title}</div>
+        <div class="skill-list">
+          ${card.items.map(i => `<span class="skill-item">${i}</span>`).join('')}
+        </div>
+      `;
+      grid.appendChild(el);
+    });
+
+    const tl = document.getElementById('about-timeline');
+    (a.timeline || []).forEach(item => {
+      tl.innerHTML += `
+        <li>
+          <div class="tl-year">${item.year}</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>${item.title}</strong>
+            ${item.description}
+          </div>
+        </li>
+      `;
+    });
+  }
+
+  // ── START ──────────────────────────────────────────────────────────
+  window.addEventListener('hashchange', () => {
+    const page = location.hash.replace('#', '') || 'home';
+    navigate(page, true);
+  });
+
+  document.addEventListener('DOMContentLoaded', init);
+
+})();
+</script>
+</body>
+</html>
