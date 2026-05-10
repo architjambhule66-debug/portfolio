@@ -92,6 +92,21 @@ const PORTFOLIO = {
           { label: "API Ref",    path: "docs/redakt/api.md" },
       ],
     },
+    {
+      id: "Pipeline-translate",
+      name: "pipeline-translate",
+      description: "Real-time WebRTC speech translation module with incremental translation logic built in",
+      tags: ["webrtc", "machine translation"],
+      badges: ["Fastapi"],
+      pypi: false,
+      //pypi_url: "https://pypi.org/project/redakt/",
+      github: "https://github.com/architjambhule66-debug/Pipeline-translate",
+      docs: [
+          { label: "README",     path: "docs/pipeline-translate/README.md" },
+          { label: "Quickstart", path: "docs/redakt/quickstart.md" },
+          { label: "API Ref",    path: "docs/redakt/api.md" },
+      ],
+    },
   ],
 
   // ── BLOG POSTS ───────────────────────────────────────────
