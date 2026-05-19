@@ -113,7 +113,7 @@ const PORTFOLIO = {
       description: "pipecat-supertonic provides a Pipecat-compatible TTSService wrapper for the official [Supertonic] Python SDK.",
       tags: ["TTS", "Supertonic", "Open source"],
       badges: ["Open source"],
-      pypi: True,
+      pypi: true,
       pypi_url: "https://pypi.org/project/pipecat-supertonic/",
       github: "https://github.com/architjambhule66-debug/pipecat-supertonic",
       docs: [
