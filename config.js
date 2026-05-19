@@ -35,8 +35,9 @@ const PORTFOLIO = {
     social: [
       { label: "GitHub",  icon: "GH", url: "https://github.com/architjambhule66-debug" },
       { label: "Twitter", icon: "𝕏",  url: "https://twitter.com/yourhandle" },
-      { label: "PyPI",    icon: "Py", url: "https://pypi.org/user/yourusername" },
+      { label: "PyPI",    icon: "Py", url: "https://pypi.org/user/Archit401/" },
       { label: "Email",   icon: "✉",  url: "mailto:architjambhule66@gmail.com" },
+      { label: "Huggingface",  icon: "🤗",  url: "https://huggingface.co/Archit-01" },
     ],
 
     // Shown on the about page below the title
