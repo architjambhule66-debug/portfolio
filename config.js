@@ -123,6 +123,7 @@ const PORTFOLIO = {
   ],
 
   // ── BLOG POSTS ───────────────────────────────────────────
+  
   // Each post can have:
   //   title:    post title
   //   date:     display date (string)
