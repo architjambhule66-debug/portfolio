@@ -120,10 +120,23 @@ const PORTFOLIO = {
           { label: "README",     path: "docs/pipecat-supertonic/README.md" },
       ],
     },
+    {
+      id: "SpecD",
+      name: "SpecD (Speculative Decoding)",
+      description: "Experimenting with speculative decoding using Gemma 3 family models",
+      tags: ["LLM Inference", "Speculative decoding"],
+      badges: ["Inference"],
+      pypi: false,
+      //pypi_url: "https://pypi.org/project/pipecat-supertonic/",
+      github: "https://github.com/architjambhule66-debug/SpecD",
+      docs: [
+          { label: "README",     path: "docs/specd/README.md" },
+      ],
+    },
   ],
 
   // ── BLOG POSTS ───────────────────────────────────────────
-  
+
   // Each post can have:
   //   title:    post title
   //   date:     display date (string)
