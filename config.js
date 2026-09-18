@@ -15,7 +15,7 @@ const PORTFOLIO = {
     heroName: "Archit<br/><em>Jambhule</em>",
 
     // Shown in hero and used on the home page
-    bio: "I build scalable and efficient <strong>Voice AI systems</strong>. Have worked across all the verticals of AI and ML",
+    bio: "I build scalable and efficient <strong>Voice AI systems</strong>",
 
     // Chips shown below bio
     tags: ["Python", "Voice AI", "Transformer Models", "Speech Recognition", "Speech Synthesis", "STT/TTS Fine-tuning"],
@@ -156,51 +156,6 @@ const PORTFOLIO = {
       tags: ["python", "open source"],
       file: "blog/snappy-origin.md",
     },
-    {
-      title: "The underrated power of pyproject.toml",
-      date: "Feb 2025",
-      readTime: "5 min read",
-      excerpt: "Everything you can do in pyproject.toml that you're probably still doing in setup.py or random config files.",
-      tags: ["python", "packaging"],
-      // Inline example — works without a file
-      content: `
-# The underrated power of pyproject.toml
-
-PEP 517 and PEP 518 changed Python packaging forever, but most developers still aren't taking full advantage of **pyproject.toml**.
-
-## What can go in there?
-
-Almost everything:
-
-- Build system configuration (\`[build-system]\`)
-- Project metadata (\`[project]\`)
-- Tool configs: black, isort, pytest, mypy, ruff — all in one file
-
-\`\`\`toml
-[tool.ruff]
-line-length = 88
-select = ["E", "F", "I"]
-
-[tool.mypy]
-strict = true
-python_version = "3.11"
-\`\`\`
-
-## Why it matters
-
-A single \`pyproject.toml\` eliminates \`setup.cfg\`, \`setup.py\`, \`.flake8\`, \`mypy.ini\`, \`pytest.ini\`, and \`.isort.cfg\`. That's six files reduced to one.
-
-The DX improvement is real.
-      `,
-    },
-    {
-      title: "Building a zero-dependency Python CLI in 2025",
-      date: "Jan 2025",
-      readTime: "9 min read",
-      excerpt: "argparse is more powerful than you think. Here's a pattern for clean, testable CLIs without Click or Typer.",
-      tags: ["python", "cli", "tutorial"],
-      file: "blog/zero-dep-cli.md",
-    },
   ],
 
   // ── CAREER ───────────────────────────────────────────────
@@ -298,26 +253,6 @@ writing **Python**, contributing to libraries on PyPI, and building scalable and
 
     // Chronological timeline
     timeline: [
-      {
-        year: "2025",
-        title: "snappy hits 40k downloads",
-        description: "The HTTP client library I built out of frustration became genuinely useful for other people.",
-      },
-      {
-        year: "2024",
-        title: "Started shipping on PyPI seriously",
-        description: "Released 4 libraries, learned a lot about packaging, versioning, and changelogs.",
-      },
-      {
-        year: "2023",
-        title: "First open source contribution",
-        description: "Merged a PR into a 10k ★ repo. Took three tries. Worth it.",
-      },
-      {
-        year: "2022",
-        title: "Started writing Python seriously",
-        description: "Switched from scrappy scripts to proper packages, tests, and CI.",
-      },
     ],
   },
 
