@@ -25,10 +25,6 @@ const PORTFOLIO = {
 
     // Stats row on home page
     stats: [
-      // { num: "12",  suffix: "+", label: "open source projects" },
-      // { num: "40",  suffix: "k", label: "PyPI downloads" },
-      // { num: "3",   suffix: "",  label: "years building" },
-      // { num: "8",   suffix: "",  label: "blog posts" },
     ],
 
     // Sidebar social icons — use text/emoji as icons
@@ -148,14 +144,6 @@ const PORTFOLIO = {
   //   content:  inline markdown string            ← for short posts
 
   blog: [
-    // {
-    //   title: "Why I stopped using requests and wrote my own HTTP client.",
-    //   date: "Apr 2025",
-    //   readTime: "7 min read",
-    //   excerpt: "After years of wrestling with retries, timeouts, and auth boilerplate, I finally built the library I always wanted.",
-    //   tags: ["python", "open source"],
-    //   file: "blog/snappy-origin.md",
-    // },
   ],
 
   // ── CAREER ───────────────────────────────────────────────
