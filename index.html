@@ -185,7 +185,7 @@
       color: var(--muted);
       background: var(--tag-bg);
     }
-    .hero-cta { display: flex; gap: 1rem; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; }
     .btn {
       font-family: 'DM Mono', monospace;
       font-size: .78rem;
@@ -297,6 +297,38 @@
       transition: all .15s;
     }
     .proj-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── MODELS ─── */
+    .models-grid { display: grid; gap: 1rem; }
+    .model-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      background: var(--surface);
+    }
+    .model-card.featured { border-left: 3px solid var(--accent); }
+    .model-task {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
+    .model-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.25rem; }
+    .model-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      padding: 1.25rem 0;
+      margin-bottom: 1.25rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .model-highlight-value { display: block; font-size: 1rem; font-weight: 600; }
+    .model-highlight-label { display: block; font-size: .75rem; color: var(--muted); margin-top: .2rem; }
+    .model-languages { margin-bottom: 1.5rem; }
+    .model-card .project-name { overflow-wrap: anywhere; }
+    .model-card .btn { max-width: 100%; }
+    .btn:focus-visible, .nav-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
     /* ─── PROJECT DOCS VIEWER ─── */
     .docs-viewer {
@@ -692,7 +724,7 @@
       .nav-logo { display: none; }
       .nav-footer { display: none; }
       .nav-links { flex-direction: row; padding: .5rem; gap: 0; }
-      .nav-link { flex-direction: column; gap: .2rem; font-size: .58rem; padding: .4rem .6rem; min-width: 60px; text-align: center; }
+      .nav-link { flex: 1; flex-direction: column; gap: .2rem; font-size: .58rem; padding: .4rem .45rem; min-width: 48px; text-align: center; }
       .nav-link .icon { font-size: .9rem; width: auto; }
       main { margin-left: 0; margin-bottom: 70px; }
       .page { padding: 1.5rem 1.25rem; }
@@ -704,6 +736,9 @@
       .blog-meta-col { text-align: left; }
       .stats-row { flex-wrap: wrap; }
       .stat { min-width: 50%; }
+      .model-card { padding: 1.25rem; }
+      .model-card .project-top { flex-direction: column; gap: .5rem; }
+      .model-highlights { grid-template-columns: 1fr; gap: .75rem; }
     }
   </style>
 </head>
@@ -723,6 +758,9 @@
       </a>
       <a class="nav-link" onclick="navigate('projects')">
         <span class="icon">⬡</span> projects
+      </a>
+      <a class="nav-link" href="#models" onclick="navigate('models')">
+        <span class="icon">◇</span> models
       </a>
       <a class="nav-link" onclick="navigate('career')">
         <span class="icon">▣</span> career
@@ -751,6 +789,7 @@
         <div class="hero-tags" id="hero-tags"></div>
         <div class="hero-cta">
           <a class="btn btn-primary" onclick="navigate('projects')">View Projects →</a>
+          <a class="btn btn-outline" href="#models" onclick="navigate('models')">View Models →</a>
           <a class="btn btn-outline" onclick="navigate('about')">About me</a>
         </div>
       </div>
@@ -765,6 +804,16 @@
         <p class="page-subtitle">Open source libraries, tools, and experiments.</p>
       </div>
       <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- MODELS -->
+    <div class="page" id="page-models">
+      <div class="page-header">
+        <div class="page-label">// models</div>
+        <h1 class="page-title">Models</h1>
+        <p class="page-subtitle">Models I've trained and fine-tuned, built for real-world AI applications.</p>
+      </div>
+      <div class="models-grid" id="models-grid"></div>
     </div>
 
     <!-- CAREER -->
@@ -842,6 +891,7 @@
   function init() {
     applyProfile();
     renderProjects();
+    renderModels();
     renderCareer();
     renderBlog();
     renderAbout();
@@ -1000,6 +1050,49 @@
         </div>
       `;
       if (proj.docs) card.addEventListener('click', () => openDocs(proj.id));
+      grid.appendChild(card);
+    });
+  }
+
+  // ── MODELS ────────────────────────────────────────────────────────
+  function renderModels() {
+    const grid = document.getElementById('models-grid');
+    grid.innerHTML = '';
+    if (!PORTFOLIO.models || !PORTFOLIO.models.length) {
+      grid.innerHTML = '<div class="empty-state">No models yet — add them in config.js</div>';
+      return;
+    }
+    PORTFOLIO.models.forEach(model => {
+      const card = document.createElement('article');
+      card.className = 'model-card' + (model.featured ? ' featured' : '');
+      card.innerHTML = `
+        ${model.task ? `<div class="model-task">${model.task}</div>` : ''}
+        <div class="project-top">
+          <h2 class="project-name">${model.name}</h2>
+          ${model.featured ? '<span class="badge featured">★ featured</span>' : ''}
+        </div>
+        <p class="project-desc">${model.description}</p>
+        <div class="model-meta">
+          ${[model.architecture, model.framework].filter(Boolean).map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+        ${(model.highlights || []).length ? `
+          <div class="model-highlights">
+            ${model.highlights.map(h => `
+              <div>
+                <span class="model-highlight-value">${h.value}</span>
+                <span class="model-highlight-label">${h.label}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+        ${(model.languages || []).length ? `
+          <div class="model-languages">
+            <div class="about-card-title">Supported languages</div>
+            <div class="project-tags">${model.languages.map(l => `<span class="tag">${l}</span>`).join('')}</div>
+          </div>
+        ` : ''}
+        ${model.huggingface ? `<a class="btn btn-primary" href="${model.huggingface}" target="_blank" rel="noopener noreferrer">View on Hugging Face ↗</a>` : ''}
+      `;
       grid.appendChild(card);
     });
   }

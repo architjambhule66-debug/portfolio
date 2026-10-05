@@ -1,7 +1,7 @@
 // ============================================================
 //  PORTFOLIO CONFIG
 //  Edit this file to customize your portfolio.
-//  All content — projects, blog posts, skills — lives here.
+//  All content — projects, models, blog posts, skills — lives here.
 // ============================================================
 
 const PORTFOLIO = {
@@ -129,6 +129,29 @@ const PORTFOLIO = {
       docs: [
           { label: "README",     path: "docs/specd/README.md" },
       ],
+    },
+  ],
+
+  // ── MODELS ───────────────────────────────────────────────
+  // Add models here to show them in the Models section.
+  // Each model supports: name, description, task, architecture,
+  // framework, languages (array), highlights (array of { value, label }),
+  // featured (boolean), and huggingface (model card URL).
+  models: [
+    {
+      name: "indic-asr-multi",
+      description: "A Conformer RNN-T model fine-tuned for multilingual speech recognition across nine Indian languages. Automatically recognizes the spoken language and transcribes in its native script — no language code needed.",
+      task: "Automatic Speech Recognition",
+      architecture: "Conformer RNN-T",
+      framework: "NVIDIA NeMo",
+      featured: true,
+      languages: ["Hindi", "Marathi", "Telugu", "Tamil", "Kannada", "Malayalam", "Gujarati", "Punjabi", "Odia"],
+      highlights: [
+        { value: "9 languages", label: "Multilingual ASR" },
+        { value: "Auto-detected", label: "Spoken language" },
+        { value: "Native script", label: "Transcription output" },
+      ],
+      huggingface: "https://huggingface.co/Archit-01/indic-asr-multi",
     },
   ],
 
