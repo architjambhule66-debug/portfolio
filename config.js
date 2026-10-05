@@ -198,6 +198,13 @@ const PORTFOLIO = {
     `,
     roles: [
       {
+        role: "Senior Data Scientist (E3)",
+        company: "HDFC Bank",
+        companyUrl: "https://www.hdfcbank.com/",
+        period: "2026 - Present",
+        summary: [],
+      },
+      {
         role: "AI Engineer",
         company: "VoicingAI",
         companyUrl: "https://voicingai.com/",
@@ -264,6 +271,31 @@ writing **Python**, contributing to libraries on PyPI, and building scalable and
 
     // Chronological timeline
     timeline: [
+      {
+        year: "2021 – 2023",
+        title: "IIT Roorkee",
+        description: "Master’s in Biotechnology (Computational Biology).",
+      },
+      {
+        year: "First internship",
+        title: "Opsfree",
+        description: "Built AI/ML pipelines to detect anomalies in logs, metrics, and traces.",
+      },
+      {
+        year: "2024 – 2025",
+        title: "Samespace · Machine Learning Engineer",
+        description: "Built RAG platforms and multi-agent AI systems.",
+      },
+      {
+        year: "2025",
+        title: "VoicingAI · AI Engineer",
+        description: "Built real-time Voice AI systems and fine-tuned speech models.",
+      },
+      {
+        year: "2026 – Present",
+        title: "HDFC Bank · Senior Data Scientist (E3)",
+        description: "Working on AI and ML.",
+      },
     ],
   },
 
